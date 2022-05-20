@@ -15,6 +15,8 @@
     "koa": "^2.13.4",
     "koa-body": "^5.0.0",
     "koa-router": "^10.1.1",
-    "nodeman": "^1.1.2"
+    "mysql2": "^2.3.3",
+    "nodeman": "^1.1.2",
+    "sequelize": "^6.19.2"
   }
 }
