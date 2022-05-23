@@ -11,6 +11,7 @@ const {
 const seq = new Sequelize(MYSQL_DB, MYSQL_USER, MYSQL_PWD, {
     host: MYSQL_HOST,
     dialect: 'mysql',
+    logging: false
 })
 
 // seq.authenticate().then(()=>{

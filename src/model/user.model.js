@@ -18,16 +18,8 @@ const User = seq.define('mr_user',{
     },
 })
 
-const Agent = seq.define('mr_agent',{
-    username:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        comment: '用户名，唯一'
-    },
-    
-})
 
-// User.sync({force: true})
+
+ //User.sync({force: true})
 
 module.exports = User
