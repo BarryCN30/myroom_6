@@ -1,6 +1,9 @@
+const bcrypt = require('bcryptjs')
+
 const {getUserInfo} = require('../service/user.service')
 
-const {userFormateError, userAlreadyExisted} = require('../consitant/err.type')
+const {userFormateError, userAlreadyExisted, userDoesnotExist, userInvalidPassword} = require('../consitant/err.type')
+
 
 
 
@@ -52,8 +55,44 @@ const verifyUser = async (ctx, next) => {
     await next()
   }
 
+
+const crptPassword = async (ctx,next) =>{
+    const { password } = ctx.request.body
+    const salt = bcrypt.genSaltSync(10);
+    //hash 里保存的是密文
+    const hash = bcrypt.hashSync(password,salt);
+
+    ctx.request.body.password = hash
+
+    await next()
+    }
+
+const verifyLogin = async (ctx, next) =>{
+    //1.判断用户是否存在
+    const {username, password} = ctx.request.body
+    
+    const res = await getUserInfo({username})
+
+    if(!res){
+        console.error('用户名不存在',{username})
+        ctx.app.emit('error', userDoesnotExist,ctx)
+        return
+    }
+    
+    //2.用户锁定后匹配密码
+    if(!bcrypt.compareSync(password,res.password)){
+        ctx.app.emit('error',userInvalidPassword, ctx)
+        return
+    }
+    await next()
+}
+
+
+
     module.exports = {
         userValidator,
         verifyUser,
+        crptPassword,
+        verifyLogin,
     }
 
