@@ -1,14 +1,14 @@
 const fs = require('fs')
+const path = require('path')
 
-const Router = require('koa-router')
-const router = new Router
+// 读取当前目录下的路由
+const useRoutes = function () {
+  fs.readdirSync(__dirname).forEach(file => {
+    if (file === 'index.js') return
+    const router = require(`./${file}`)
+    this.use(router.routes())
+    this.use(router.allowedMethods())
+  })
+}
 
-
-fs.readdirSync(__dirname).forEach(file =>{
-    if(file != 'index.js'){
-        let r = require('./' + file)
-        router.use(r.routes())
-    }
-})
-
-module.exports = router
+module.exports = useRoutes

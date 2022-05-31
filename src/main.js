@@ -1,10 +1,11 @@
-
-
-const{APP_PORT} = require('./config/config.default')
-
 const app = require('./app')
 
+// 注入环境变量
+const config = require('./app/config')
 
-app.listen(APP_PORT,() => {
-    console.log(`server is running on http://localhost:${APP_PORT}`)
+// 启动数据库
+require('./app/database')
+
+app.listen(config.APP_PORT, () => {
+  console.log(`服务器在${config.APP_PORT}端口启动成功~`)
 })
